@@ -44,9 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: null),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      
     );
   }
 

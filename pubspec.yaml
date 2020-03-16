@@ -26,6 +26,8 @@ dependencies:
 
   qr_code_scanner: any
 
+  stack_overlay: any
+  
 
 dev_dependencies:
   flutter_test:
