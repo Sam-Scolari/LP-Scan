@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter/services.dart';
-
+import 'settings.dart';
+import 'upload.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -26,6 +27,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int points = 1000;
+  bool alertBox = false;
+
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   var qrText = "";
   QRViewController controller;
@@ -44,24 +48,63 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: null),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Navigator.push(
+        context,
+          MaterialPageRoute(builder: (context) => Settings()),
+        );
+      }, 
+      child: Icon(Icons.settings), backgroundColor: Color.fromARGB(255, 67, 230, 110)),
+      
       
     );
   }
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        qrText = scanData;
+      controller.scannedDataStream.listen((scanData) {
+        setState(() {
+          qrText = scanData;
+          if (alertBox == false){
+            Upload.points(qrText, points);
+            _showDialog(qrText);
+          }
+        });
       });
-    });
   }
 
   @override
   void dispose() {
     controller?.dispose();
     super.dispose();
+  }
+  // user defined function
+  void _showDialog(var data) {
+    setState(() {
+      alertBox = true;
+    });
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Upload"),
+          content: new Text("User "+data+" has been awarded points."),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  alertBox = false;
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

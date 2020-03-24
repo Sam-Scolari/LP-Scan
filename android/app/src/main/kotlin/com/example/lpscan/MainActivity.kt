@@ -1,4 +1,4 @@
-package com.example.lpscan
+package com.lpscan
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
