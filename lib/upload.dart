@@ -9,6 +9,15 @@ class Upload{
         'points': FieldValue.increment(1000)
       }, merge: true);
   }
+
+  static preset(var preset, var points){
+    final Firestore _db = Firestore.instance;
+
+    DocumentReference ref = _db.collection('generalData').document('presets');
+      ref.setData({
+        preset: points
+      });
+  }
 }
 
 
